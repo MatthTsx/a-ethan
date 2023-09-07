@@ -43,7 +43,7 @@ function User() {
           bg-gradient-to-tr from-neutral-900/60 to-neutral-900'>
             <Image width={75} height={75} src={user.data?.image!} alt='profile'
             className='w-24 h-24 object-contain rounded-xl'/>
-            <p className='font-semibold text-xl'>{user.data?.name!}</p>
+            <p className='font-semibold text-xl text-lightGolden'>{user.data?.name!}</p>
           </div>
           }
 
@@ -54,8 +54,6 @@ function User() {
           hover:scale-100 hover:opacity-100 transition-all
           bg-gradient-to-tr from-neutral-900/60 to-neutral-900'
           >
-            <Image width={75} height={75} src={user.data?.image!} alt='profile'
-            className='w-24 h-24 object-contain rounded-xl'/>
             <p className='text-black'>AAdjawjd</p>
           </div>
           }

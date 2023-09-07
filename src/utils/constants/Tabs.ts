@@ -19,4 +19,9 @@ export default [
         Path: "/",
         icon: "clock"
     },
+    {
+        text: "Create quiz",
+        Path: "/Create/",
+        icon: "plus"
+    },
 ]

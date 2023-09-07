@@ -1,6 +1,5 @@
 const sleep = async (ts: number) => {
-    //@ts-ignore
-    return await new Promise(resolve => setTimeout(() =>resolve(), ts))
+    return await new Promise(resolve => setTimeout(() =>resolve(0), ts))
 }
 
 export default sleep
