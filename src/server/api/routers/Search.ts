@@ -13,8 +13,9 @@ export const SearchRouter = createTRPCRouter({
           Name: true,
           Description: true,
           id: true,
-          tags : {where: {Tittle: {...input}}},
-          User: {select: {name: true, id: true}}
+          tags : {select: {Tittle:true, id:true}},
+          User: {select: {name: true, id: true}},
+          Image: true
         }
 
         return ctx.prisma.quiz.findMany({

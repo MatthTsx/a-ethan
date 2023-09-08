@@ -15,6 +15,7 @@ export default function Home() {
       <GeralLayout session={session.data!}>
         <div className="flex h-full w-full flex-col items-center rounded-md bg-black">
           <Search setText={setSearchValue} />
+          <div className="my-4 h-0.5 w-[75%] bg-neutral-900" />
           <ShowQuizzes SearchValue={SearchValue} />
         </div>
       </GeralLayout>
