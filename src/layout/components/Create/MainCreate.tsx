@@ -60,8 +60,8 @@ function MainCreate({ ...props }: props) {
   );
 
   return (
-    <div className="flex h-full w-full rounded-md bg-black p-5">
-      <div className="flex h-full w-[100%] flex-col gap-8 overflow-x-hidden overflow-y-scroll">
+    <div className="flex h-full w-full items-center justify-center rounded-md bg-black p-5">
+      <div className="flex h-full w-fit flex-col gap-8 overflow-x-hidden overflow-y-scroll px-4">
         <div className="flex h-48 w-full flex-shrink-0 items-center gap-12">
           <ImageInput />
           <InputSet1 func={handleUpdate} userName={props.userName} />
