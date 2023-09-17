@@ -22,8 +22,8 @@ model Example {
 
 // Necessary for Next auth
 model Account {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
-    userId            String @db.ObjectId
+    id                String  @id @default(auto()) @map("_id") @db.ObjectId
+    userId            String  @db.ObjectId
     type              String
     provider          String
     providerAccountId String
@@ -40,74 +40,74 @@ model Account {
 }
 
 model Session {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
     sessionToken String   @unique
-    userId       String @db.ObjectId
+    userId       String   @db.ObjectId
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    id            String    @id @default(auto()) @map("_id") @db.ObjectId
     name          String?
     email         String?   @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
-    Quizes Quiz[]
-    Scores Score[]
+    Quizes        Quiz[]
+    Scores        Score[]
 }
 
-model Question{
-    id String @id @map("_id") @default(auto()) @db.ObjectId
-    Quiz Quiz @relation(fields: [QuizId], references: [id])
-    QuizId String @db.ObjectId
-    Text String
+model Question {
+    id      String    @id @default(auto()) @map("_id") @db.ObjectId
+    Quiz    Quiz      @relation(fields: [QuizId], references: [id])
+    QuizId  String    @db.ObjectId
+    Text    String
     Correct Int
     Answers Answers[]
 }
 
-model Answers{
-    id String @id @map("_id") @default(auto()) @db.ObjectId
-    Text String
-    value Int
-    Question Question @relation(fields: [QuestionId], references: [id])
-    QuestionId String @db.ObjectId
+model Answers {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    Text       String
+    value      Int
+    Question   Question @relation(fields: [QuestionId], references: [id])
+    QuestionId String   @db.ObjectId
 }
 
 model Quiz {
-    id  String @id @map("_id") @default(auto()) @db.ObjectId
-    User User @relation(references: [id], fields: [UserId])
-    UserId String @db.ObjectId
-    Name String
+    id          String     @id @default(auto()) @map("_id") @db.ObjectId
+    User        User       @relation(references: [id], fields: [UserId])
+    UserId      String     @db.ObjectId
+    Name        String
     Description String?
-    Image String?
-    Questions Question[]
-    tags Tags[] @relation(fields: [tagsId], references: [id])
-    tagsId String[] @db.ObjectId
-    Scores Score[]
+    Image       String?
+    Questions   Question[]
+    tags        Tags[]     @relation(fields: [tagsId], references: [id])
+    tagsId      String[]   @db.ObjectId
+    Scores      Score[]
 }
 
-model Score{
-    id String @id @map("_id") @db.ObjectId @default(auto())
-    Quiz Quiz @relation(fields: [QuizId], references: [id])
+model Score {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    Quiz   Quiz   @relation(fields: [QuizId], references: [id])
     QuizId String @db.ObjectId
-    User User @relation(fields: [UserId], references: [id])
+    User   User   @relation(fields: [UserId], references: [id])
     UserId String @db.ObjectId
-    right Int
+    right  Int
 }
 
-model Tags{
-    id String @db.ObjectId @map("_id") @default(auto()) @id
-    Quizes Quiz[] @relation(fields: [QuizesId], references: [id])
+model Tags {
+    id       String   @id @default(auto()) @map("_id") @db.ObjectId
+    Quizes   Quiz[]   @relation(fields: [QuizesId], references: [id])
     QuizesId String[] @db.ObjectId
-    Tittle String
-    Color String
+    Tittle   String   @unique
+    Color    String
 }
 
 model VerificationToken {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
     identifier String
     token      String   @unique
     expires    DateTime

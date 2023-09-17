@@ -33,7 +33,7 @@ function ShowQuizzes({ ...props }: props) {
   const [viewing, setViewing] = React.useState<T1>();
 
   return (
-    <div className="flex w-full flex-wrap gap-4 overflow-y-scroll px-16">
+    <div className="flex w-full flex-wrap gap-4 overflow-y-scroll px-16 scrollbar  scrollbar-thumb-purple">
       {getQuizs.status == "loading" ? (
         <div className="flex w-full items-center justify-center">
           <Loading height={"6em"} width="6em" type={1} />

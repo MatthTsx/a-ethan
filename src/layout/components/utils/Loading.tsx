@@ -1,39 +1,46 @@
-import React from 'react'
+import React from "react";
 
-interface props{
-    width: string,
-    height: string,
-    type: number,
-    qntd?: number
+interface props {
+  width: string;
+  height: string;
+  type: number;
+  qntd?: number;
 }
 
-function Loading({...props} : props) {
+function Loading({ ...props }: props) {
   return (
-    <div style={{
+    <div
+      style={{
         width: props.width,
-        height:props.height
-    }}
-    className='flex w-full h-36 p-2 gap-4 rounded-md scale-95 opacity-100
-    transition-all items-center animate-pulse duration-200
-    bg-gradient-to-tr from-neutral-900/60 to-neutral-900'>
-        {props.type == 1 && Circle()}
-        {props.type == 2 && Normal()}
+        height: props.height,
+      }}
+      className="flex h-36 w-full scale-95 animate-pulse items-center gap-4 rounded-md
+    bg-gradient-to-tr from-neutral-900/60 to-neutral-900 p-2
+    opacity-100 transition-all duration-200"
+    >
+      {props.type == 1 && Circle()}
+      {props.type == 2 && Normal()}
+      {props.type == 3 && CircleMid()}
     </div>
-  )
+  );
 }
 
-function Circle(){
-    return (
-        <div className='border-8 rounded-full w-16 h-16 border-black border-b-purple animate-spin ml-2'/>
-    )
+function Circle() {
+  return (
+    <div className="ml-2 h-16 w-16 animate-spin rounded-full border-8 border-black border-b-purple" />
+  );
 }
 
-function Normal(){
-    return(
-        <div>
-            A
-        </div>
-    )
+function Normal() {
+  return <div></div>;
 }
 
-export default Loading
+function CircleMid() {
+  return (
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="h-16 w-16 animate-spin rounded-full border-8 border-black border-b-purple" />
+    </div>
+  );
+}
+
+export default Loading;

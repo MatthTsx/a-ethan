@@ -31,4 +31,16 @@ export const SearchRouter = createTRPCRouter({
           select
         })
     }),
+  getTags: publicProcedure
+    .input(z.object({text: z.string()}))
+    .query(({ctx, input}) => (
+      ctx.prisma.tags.findMany({
+        where: {
+          Tittle: {contains: input.text, mode: 'insensitive'}
+        },
+        select: {Color: true, id: true, Tittle: true},
+        take: 10,
+        orderBy: {Quizes: {_count: "desc"}}
+      })
+    ))
 });
