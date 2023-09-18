@@ -5,9 +5,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        purple: "#422E5F",
-        purple2:"#342954",
-        lightGolden: "#F9DA9E"
+        // purple: "#422E5F",
+        purple: "#573e7a",
+        // purple2:"#342954",
+        purple2:"#4d3e75",
+        lightGolden: "#F9DA9E",
+        darkPurple: "#201930"
       }
     },
   },

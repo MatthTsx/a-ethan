@@ -152,7 +152,7 @@ function MainCreate({ ...props }: props) {
         <h2 className="text-lightGolden">{Inputs.Name || "Name"}</h2>
         <div className="h-1 w-full bg-gradient-to-r from-lightGolden via-lightGolden to-purple" />
         <textarea
-          className="w-full[45.2rem] h-[25rem] flex-shrink-0 rounded-md bg-purple/50 p-4 text-lightGolden opacity-40 outline-none transition-all focus:opacity-80"
+          className="w-full[45.2rem] h-[25rem] flex-shrink-0 rounded-md bg-purple/50 p-4 text-lightGolden opacity-75 outline-none transition-all focus:opacity-100"
           placeholder="Text"
           defaultValue={Questions[Editing - 1]?.Text}
           onChange={(e) =>
@@ -162,6 +162,42 @@ function MainCreate({ ...props }: props) {
             })
           }
         />
+        <div className="my-2 h-1 w-full bg-gradient-to-r from-lightGolden/0 via-lightGolden to-lightGolden/0" />
+        <p className="text-center font-semibold text-lightGolden">Choices:</p>
+        {Questions[Editing]?.Answers.map((A, i) => AnswersView(i))}
+        {AnswersView(0)}
+        {AnswersView(1)}
+        <button className="w-full rounded-md bg-lightGolden bg-opacity-70 font-semibold text-purple transition-all hover:bg-opacity-100">
+          Add
+        </button>
+      </div>
+    );
+  }
+
+  function AnswersView(index: number) {
+    const isRight = Questions[Editing-1]?.Answers[index] == Questions[Editing]?.Correct
+
+    return (
+      <div key={index} className="flex h-32 w-[75%] gap-4 flex-shrink-0">
+        <div className="flex w-[10%] flex-col items-center gap-4 py-2 rounded-md" style={{
+          backgroundColor: isRight ? "#F9DA9E" : "#4d3e75",
+        }}>
+          {isRight ?
+          <button className="w-7 h-7 group"><FontAwesomeIcon icon={"fa-square-check" as IconProp} className="w-full h-full group-hover:text-darkPurple"/></button>
+          :<button className="w-7 h-7 group"><FontAwesomeIcon icon={"fa-square-xmark" as IconProp} className="w-full h-full group-hover:text-darkPurple"/></button>
+        }
+          <button className="group flex h-7 w-7 items-center rounded-full">
+            <FontAwesomeIcon
+              icon={"fa-trash" as IconProp}
+              className="h-full w-full transition-all  group-hover:text-darkPurple"
+            />
+          </button>
+        </div>
+        <textarea
+          className="h-full w-[80%] flex-shrink-0 rounded-md bg-purple/50 p-4 text-lightGolden opacity-75 outline-none transition-all focus:opacity-100"
+          placeholder="Text"
+          defaultValue={Questions[Editing - 1]?.Text}
+        />
       </div>
     );
   }
@@ -169,11 +205,14 @@ function MainCreate({ ...props }: props) {
   function questionView(Title: string, index: number) {
     return (
       <button
-        className="flex min-h-[2em] w-full flex-col justify-center rounded-md bg-purple/20 p-2 opacity-80 transition-all hover:opacity-100"
+        className="flex min-h-[2em] w-full flex-col justify-center rounded-md bg-purple/20 p-2 opacity-80 transition-all hover:opacity-100 flex-shrink-0"
         key={index}
         onClick={() => setEditing(index + 1)}
       >
-        <p className="font-semibold text-purple2">{Title}A</p>
+        <p className="font-semibold text-lightGolden">
+          {Title.slice(0, 55)}
+          {Title.length > 55 && "..."}
+        </p>
         <div className="h-1 w-full bg-gradient-to-r from-lightGolden/20 via-lightGolden/50 to-black/0" />
       </button>
     );
