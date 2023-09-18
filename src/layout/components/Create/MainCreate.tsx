@@ -5,11 +5,22 @@ import { isValid_URL } from "~/utils/scripts/URL";
 import InputSet1 from "./InputSet1";
 import InputSet2 from "./InputSet2";
 import { useRouter } from "next/router";
-import InputSet3 from "./InputSet3";
+import InputSet3, { Data } from "./InputSet3";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface props {
   UserId: string;
   userName: string;
+}
+
+interface QuestionsData {
+  Answers: {
+    Text: string;
+    value: number;
+  }[];
+  Correct: number;
+  Text: string;
 }
 
 export interface Input_Interface {
@@ -27,6 +38,11 @@ function MainCreate({ ...props }: props) {
     img: "",
     Name: "",
   });
+  const [TagData, setTagData] = React.useState<Array<Data>>([]);
+
+  const [Editing, setEditing] = React.useState(0);
+  const [Questions, setQuestions] = React.useState<Array<QuestionsData>>([]);
+
   const handleUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((current) => ({ ...current, [e.target.name]: e.target.value }));
   };
@@ -66,24 +82,102 @@ function MainCreate({ ...props }: props) {
     />
   );
 
+  const handleAddQuestion = () => {
+    setQuestions((current) => [
+      ...current,
+      { Answers: [], Correct: 0, Text: "" },
+    ]);
+    setEditing(Questions.length + 1);
+  };
+
   return (
-    <div className="flex h-full w-full items-center justify-center rounded-md bg-black p-5">
-      <div className="flex h-full w-fit flex-col gap-8 overflow-x-hidden overflow-y-scroll px-4 scrollbar scrollbar-thumb-purple2/50">
-        <div className="flex h-48 w-full flex-shrink-0 items-center gap-12">
-          <ImageInput />
-          <InputSet1 func={handleUpdate} userName={props.userName} />
+    <div className="flex h-full w-full items-center justify-between rounded-md bg-black p-5 px-2">
+      <>
+        {Editing ? (
+          creatingQuestionScreen()
+        ) : (
+          <div className="flex h-full w-fit flex-col gap-8 overflow-x-hidden overflow-y-scroll px-4 scrollbar scrollbar-thumb-purple2/50">
+            <div className="flex h-48 w-full flex-shrink-0 items-center gap-12">
+              <ImageInput />
+              <InputSet1
+                func={handleUpdate}
+                userName={props.userName}
+                Name={Inputs.Name}
+                url={Inputs.img}
+              />
+            </div>
+            <InputSet2 func={setInputs} Bio={Inputs.desc} />
+            <InputSet3
+              func={setInputs}
+              vals={Inputs}
+              TagData={TagData}
+              setTagData={setTagData}
+            />
+            <button
+              onClick={create}
+              className="mb-16 h-16 w-[61.5%] flex-shrink-0 bg-blue-500"
+            />
+          </div>
+        )}
+        <div className="mx-2 h-full w-1 rounded-md bg-gradient-to-t from-black via-neutral-900 to-black" />
+        <div className="flex h-full w-[31%] flex-col gap-2">
+          <h2 className="w-full bg-gradient-to-t from-lightGolden via-lightGolden to-purple bg-clip-text text-center font-bold text-transparent">
+            Questions
+          </h2>
+          <div className="flex h-[85%] w-full flex-col gap-2 overflow-y-scroll scrollbar-none">
+            {Questions.map((dt, i) => questionView(dt.Text, i))}
+          </div>
+          <button
+            className="flex w-full flex-col rounded-md bg-lightGolden p-1 px-4 opacity-80 transition-all hover:scale-[1.025] hover:opacity-100"
+            onClick={handleAddQuestion}
+          >
+            Add
+          </button>
         </div>
-        <InputSet2 func={setInputs} />
-        <InputSet3 func={setInputs} vals={Inputs} />
-        <button
-          onClick={create}
-          className="mb-16 h-16 w-[61.5%] flex-shrink-0 bg-blue-500"
-        />
-      </div>
-      <div className="mx-2 h-full w-1 rounded-md bg-gradient-to-t from-black via-neutral-900 to-black" />
-      <div className="h-full w-[30%] flex-col bg-green-500"></div>
+      </>
     </div>
   );
+  function creatingQuestionScreen() {
+    return (
+      <div className="relative flex h-full w-[63.05%] flex-col gap-4 overflow-x-hidden overflow-y-scroll px-4 pl-12 scrollbar scrollbar-thumb-purple2/50">
+        <button
+          className="p-.5 absolute left-0 top-0 h-8 w-8 rounded-full bg-purple"
+          onClick={() => setEditing(0)}
+        >
+          <FontAwesomeIcon
+            icon={"fa-circle-xmark" as IconProp}
+            className="h-full w-full"
+          />
+        </button>
+        <h2 className="text-lightGolden">{Inputs.Name || "Name"}</h2>
+        <div className="h-1 w-full bg-gradient-to-r from-lightGolden via-lightGolden to-purple" />
+        <textarea
+          className="w-full[45.2rem] h-[25rem] flex-shrink-0 rounded-md bg-purple/50 p-4 text-lightGolden opacity-40 outline-none transition-all focus:opacity-80"
+          placeholder="Text"
+          defaultValue={Questions[Editing - 1]?.Text}
+          onChange={(e) =>
+            setQuestions((current) => {
+              current[Editing - 1]!.Text = e.target.value;
+              return current;
+            })
+          }
+        />
+      </div>
+    );
+  }
+
+  function questionView(Title: string, index: number) {
+    return (
+      <button
+        className="flex min-h-[2em] w-full flex-col justify-center rounded-md bg-purple/20 p-2 opacity-80 transition-all hover:opacity-100"
+        key={index}
+        onClick={() => setEditing(index + 1)}
+      >
+        <p className="font-semibold text-purple2">{Title}A</p>
+        <div className="h-1 w-full bg-gradient-to-r from-lightGolden/20 via-lightGolden/50 to-black/0" />
+      </button>
+    );
+  }
 }
 
 export default MainCreate;

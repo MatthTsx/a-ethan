@@ -1,7 +1,6 @@
 import { z } from "zod";
 import {
   createTRPCRouter,
-  // publicProcedure,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
@@ -45,8 +44,54 @@ export const QuizRouter = createTRPCRouter({
           select: {
             Description: true, tags: {select: {Tittle: true, Color: true}}, Image: true, Name: true,
             Questions: {select: {_count: true}}, Scores: {where: {UserId: input.userID}, select: {right: true}},
-            User: {select: {name: true, image: true}}
+            User: {select: {name: true, image: true, id:true}}
           }
         })
-      ))
+      )),
+  getQuestions: protectedProcedure
+      .input(z.object({id: z.string()}))
+      .query(({ctx, input}) => (
+        ctx.prisma.question.findMany({
+          where:{
+            QuizId: input.id
+          },
+          select:{
+            Answers: true,
+            Correct: false,
+            id: true, Text: true
+          }
+        })
+      )),
+
+  getCorrect: protectedProcedure
+      .input(z.object({id: z.string()}))
+      .query(({ctx, input}) => (
+        ctx.prisma.question.findFirst({
+          where: {id: input.id},
+          select: {Correct: true}
+        })
+      )),
+
+  addScore: protectedProcedure
+      .input(z.object({userID: z.string(), QuizID: z.string()}))
+      .mutation(({ctx, input}) => {
+        ctx.prisma.score.update({
+          where: {
+            QuizId_UserId: {
+              QuizId: input.QuizID,
+              UserId: input.userID
+            }
+          },
+          data: { right:{ increment: 1 } }
+        }).catch((error) => console.log(error))
+      }),
+
+  resetScore: protectedProcedure
+      .input(z.object({UserId: z.string(), QuizId: z.string()}))
+      .mutation(({ctx, input}) => {
+        ctx.prisma.score.update({
+          where: {QuizId_UserId: {...input}},
+          data: { right: 0 }
+        }).catch((error) => console.log(error))
+      }),
 });

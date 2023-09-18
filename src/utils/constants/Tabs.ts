@@ -1,4 +1,4 @@
-export default [
+const tabs = [
     {
         text: "Home",
         Path: "/",
@@ -25,3 +25,5 @@ export default [
         icon: "plus"
     },
 ]
+
+export default tabs

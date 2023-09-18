@@ -7,9 +7,11 @@ import Loading from "../utils/Loading";
 interface props {
   func: React.Dispatch<React.SetStateAction<Input_Interface>>;
   vals: Input_Interface | undefined;
+  TagData: Data[];
+  setTagData: React.Dispatch<React.SetStateAction<Data[]>>;
 }
 
-interface Data {
+export interface Data {
   Color: string;
   id: string;
   Tittle: string;
@@ -19,7 +21,6 @@ function InputSet3({ ...props }: props) {
   const [text, setText] = React.useState("");
   const tagsApi = api.search.getTags.useQuery({ text });
   //   type TagData = typeof tagsApi.data
-  const [TagData, setTagData] = React.useState<Array<Data>>([]);
   const createTag = api.Quiz.createTag.useMutation();
 
   const handleNew = () => {
@@ -30,16 +31,16 @@ function InputSet3({ ...props }: props) {
   };
 
   const addToTags = (dt: Data) => {
-    if (TagData.find((d) => d.id == dt.id)) return;
-    setTagData((current) => [...current, dt]);
+    if (props.TagData.find((d) => d.id == dt.id)) return;
+    props.setTagData((current) => [...current, dt]);
     props.func((current) => ({
       ...current,
       tags: [...current?.tags, dt.id],
     }));
   };
   const DeleteTagData = (dt: Data) => {
-    setTagData((current) => {
-      const index = current.indexOf(TagData.find((d) => d.id == dt.id)!);
+    props.setTagData((current) => {
+      const index = current.indexOf(props.TagData.find((d) => d.id == dt.id)!);
       if (index < 0) return current;
       return current.splice(index, 1);
     });
@@ -81,7 +82,7 @@ function InputSet3({ ...props }: props) {
         )}
         <div className="mx-4 h-full w-1 bg-gradient-to-t from-black via-neutral-900 to-black" />
         <div className="relative my-2 flex h-48 w-[47.5%] flex-col gap-1">
-          {TagData.map((tg, i) =>
+          {props.TagData.map((tg, i) =>
             TagView({ ...tg, removable: true, func: DeleteTagData, key: i })
           )}
         </div>

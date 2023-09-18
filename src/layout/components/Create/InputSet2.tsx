@@ -3,6 +3,7 @@ import type { Input_Interface } from "./MainCreate";
 
 interface props {
   func: React.Dispatch<React.SetStateAction<Input_Interface>>;
+  Bio: string;
 }
 
 function InputSet2({ ...props }: props) {
@@ -13,6 +14,7 @@ transition-all focus:opacity-100"
       onChange={(e) =>
         props.func((current) => ({ ...current, desc: e.target.value }))
       }
+      defaultValue={props.Bio}
       placeholder="Bio"
     />
   );

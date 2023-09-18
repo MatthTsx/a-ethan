@@ -3,6 +3,8 @@ import React from "react";
 interface props {
   userName: string;
   func: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  Name: string;
+  url: string;
 }
 
 function InputSet1({ ...props }: props) {
@@ -14,6 +16,7 @@ function InputSet1({ ...props }: props) {
         name="Name"
         onChange={props.func}
         className="mt-6 w-96 rounded-lg bg-neutral-200 p-4 py-2 font-semibold text-purple outline-none placeholder:text-black"
+        defaultValue={props.Name}
       />
       <input
         type="text"
@@ -21,6 +24,7 @@ function InputSet1({ ...props }: props) {
         name="img"
         onChange={props.func}
         className="mt-6 w-96 rounded-lg bg-neutral-200 p-4 py-2 font-semibold text-purple outline-none placeholder:text-black"
+        defaultValue={props.url}
       />
       <p className="ml-2 text-sm font-semibold text-lightGolden">
         Made by{" "}

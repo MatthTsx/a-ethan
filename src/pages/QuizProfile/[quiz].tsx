@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import Loading from "~/layout/components/utils/Loading";
@@ -68,9 +69,12 @@ function Quiz() {
               </span>{" "}
               {QuizData.data?.Questions.length}
             </p>
-            <button className="cursor-pointer rounded-md bg-lightGolden p-2 py-1 font-semibold text-purple opacity-80 transition-all hover:scale-105 hover:opacity-100">
+            <Link
+              className="cursor-pointer rounded-md bg-lightGolden p-2 py-1 font-semibold text-purple opacity-80 transition-all hover:scale-105 hover:opacity-100"
+              href={"/Quiz/" + id}
+            >
               Start Quiz
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -82,12 +86,15 @@ function Quiz() {
             height={100}
             className="aspect-square w-10 rounded-full object-cover object-center grayscale-[.5] transition-all group-hover:grayscale-0"
           />
-          <p className="ml-2 text-sm font-semibold text-lightGolden">
+          <Link
+            className="ml-2 text-sm font-semibold text-lightGolden"
+            href={"/profile/" + QuizData.data?.User.id}
+          >
             Made by{" "}
             <span className="bg-gradient-to-t from-purple2 to-violet-500 bg-clip-text font-bold text-transparent">
               {QuizData.data?.User.name}
             </span>
-          </p>
+          </Link>
         </div>
 
         <p className="text-purple2">{QuizData.data?.Description}</p>
@@ -99,8 +106,8 @@ function Quiz() {
 function loadingScreen() {
   return (
     <div className="relative flex h-full w-full items-center gap-2 p-4">
-      <Loading height="100%" width="30%" type={3} />
-      <Loading height="100%" width="70%" type={2} />
+      <Loading height="100%" width="42%" type={3} />
+      <Loading height="100%" width="53%" type={2} />
     </div>
   );
 }

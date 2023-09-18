@@ -90,12 +90,15 @@ model Quiz {
 }
 
 model Score {
-    id     String @id @default(auto()) @map("_id") @db.ObjectId
-    Quiz   Quiz   @relation(fields: [QuizId], references: [id])
-    QuizId String @db.ObjectId
-    User   User   @relation(fields: [UserId], references: [id])
-    UserId String @db.ObjectId
-    right  Int
+    id           String @id @default(auto()) @map("_id") @db.ObjectId
+    Quiz         Quiz   @relation(fields: [QuizId], references: [id])
+    QuizId       String @db.ObjectId
+    User         User   @relation(fields: [UserId], references: [id])
+    UserId       String @db.ObjectId
+    right        Int    @default(0)
+    BiggestScore Int    @default(0)
+
+    @@unique([QuizId, UserId])
 }
 
 model Tags {
