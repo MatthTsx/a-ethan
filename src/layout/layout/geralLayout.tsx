@@ -1,20 +1,20 @@
-import React from 'react'
-import { geralProps } from '~/libs/interfaces/geralProps'
-import LeftBar from './LeftBar'
+import React from "react";
+import type { geralProps } from "~/libs/interfaces/geralProps";
+import LeftBar from "./LeftBar";
 
-interface props extends geralProps{
-    children: React.ReactNode
+interface props extends geralProps {
+  children: React.ReactNode;
 }
 
-function GeralLayout({...props} : props) {
+function GeralLayout({ ...props }: props) {
   return (
-    <div className='flex h-screen w-full bg-gradient-to-b from-[#2e026d] to-[#15162c]'>
-        <LeftBar {...props}/>
-        <div className="p-1.5 w-full h-full overflow-y-hidden">
-          {props.children}
-        </div>
+    <div className="flex h-screen w-full bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <LeftBar {...props} />
+      <div className="h-full w-full overflow-y-hidden p-1.5">
+        {props.children}
+      </div>
     </div>
-  )
+  );
 }
 
-export default GeralLayout
+export default GeralLayout;

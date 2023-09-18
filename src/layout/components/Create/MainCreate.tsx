@@ -5,7 +5,7 @@ import { isValid_URL } from "~/utils/scripts/URL";
 import InputSet1 from "./InputSet1";
 import InputSet2 from "./InputSet2";
 import { useRouter } from "next/router";
-import InputSet3, { Data } from "./InputSet3";
+import InputSet3, { type Data } from "./InputSet3";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 

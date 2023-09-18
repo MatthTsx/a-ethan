@@ -12,7 +12,7 @@ function User() {
   const session = useSession();
   const id = useRouter().asPath.replace("/profile/", "");
   const user = api.profile.getProfile.useQuery({ id });
-  const isSame = id == session.data?.user.id;
+  // const isSame = id == session.data?.user.id;
 
   // useEffect(() => {
   //   if(user.status == "loading" || !loading) return
