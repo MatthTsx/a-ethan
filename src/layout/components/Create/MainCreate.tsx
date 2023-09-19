@@ -146,8 +146,10 @@ function MainCreate({ ...props }: props) {
                 create();
                 e.currentTarget.disabled = true;
               }}
-              className="mb-16 h-16 w-[61.5%] flex-shrink-0 rounded-md bg-darkPurple"
-            />
+              className="mb-16 h-16 w-full flex-shrink-0 scale-[.98] rounded-md bg-darkPurple font-semibold text-lightGolden transition-all hover:scale-100"
+            >
+              Create
+            </button>
           </div>
         )}
         <div className="mx-2 h-full w-1 rounded-md bg-gradient-to-t from-black via-neutral-900 to-black" />
