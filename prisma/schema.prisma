@@ -64,7 +64,7 @@ model Question {
     Quiz    Quiz      @relation(fields: [QuizId], references: [id])
     QuizId  String    @db.ObjectId
     Text    String
-    Correct Int        @default(0)
+    Correct Int       @default(0)
     Answers Answers[]
 }
 
@@ -87,6 +87,7 @@ model Quiz {
     tags        Tags[]     @relation(fields: [tagsId], references: [id])
     tagsId      String[]   @db.ObjectId
     Scores      Score[]
+    createdAt   DateTime   @default(now())
 }
 
 model Score {

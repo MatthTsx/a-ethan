@@ -33,7 +33,20 @@ function Quiz() {
       <div className="flex h-full w-full gap-4 p-4">
         {LeftPart()}
         <div className="mx-2 h-full w-1 bg-gradient-to-t from-black/0 via-purple/20 to-black/0" />
-        <div className="h-full w-[53%] bg-green-500"></div>
+        <div className="flex h-full w-[53%] gap-4 p-4">
+          {QuizData.data?.tags.map((data, i) => (
+            <div
+              className={`group flex h-fit w-fit cursor-default items-center gap-2 rounded-md bg-neutral-900 p-1 px-2 text-sm font-semibold text-lightGolden`}
+              key={i}
+            >
+              <div
+                style={{ backgroundColor: "rgb(" + data.Color + ")" }}
+                className="h-2 w-2 rounded-full"
+              />
+              {data.Tittle}
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

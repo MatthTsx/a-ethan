@@ -21,6 +21,7 @@ interface QuestionsData {
   }[];
   Correct: number;
   Text: string;
+  count: number;
 }
 
 export interface Input_Interface {
@@ -39,6 +40,8 @@ function MainCreate({ ...props }: props) {
     Name: "",
   });
   const [TagData, setTagData] = React.useState<Array<Data>>([]);
+  const textAreaCreateViewofQuestion =
+    React.useRef<HTMLTextAreaElement | null>();
 
   const [Editing, setEditing] = React.useState(0);
   const [Questions, setQuestions] = React.useState<Array<QuestionsData>>([]);
@@ -48,12 +51,18 @@ function MainCreate({ ...props }: props) {
   };
   const Router = useRouter();
   const load = React.useRef(false);
-  const [update, setUpdate] = React.useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [update, setUpdate] = React.useState(false);
 
   const create = () =>
     createApi_.mutate({
       _UserId: props.UserId,
       ...Inputs,
+      Questions: Questions.map((Q) => ({
+        Answers: Q.Answers,
+        Correct: Q.Correct,
+        Text: Q.Text,
+      })),
     });
 
   React.useEffect(() => {
@@ -67,6 +76,12 @@ function MainCreate({ ...props }: props) {
       })
       .catch((err) => console.log(err));
   }, [createApi_.status, createApi_.data, Router]);
+
+  React.useEffect(() => {
+    if (!Editing || !textAreaCreateViewofQuestion.current) return;
+    textAreaCreateViewofQuestion.current.value = Questions[Editing - 1]!.Text;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Editing]);
 
   const ImageInput = () => (
     <Image
@@ -86,21 +101,21 @@ function MainCreate({ ...props }: props) {
   const handleAddQuestion = () => {
     setQuestions((current) => [
       ...current,
-      { Answers: [], Correct: 0, Text: "" },
+      { Answers: [], Correct: 0, Text: "", count: 0 },
     ]);
     setEditing(Questions.length + 1);
   };
 
   const handleAddAnswer = (index: number) => {
     setQuestions((current) => {
+      current[index]!.count++;
       current[index]!.Answers.push({
-        Text: "New Choice",
-        value: current[index]!.Answers.length | 0,
+        Text: "",
+        value: current[index]!.count,
       });
-      console.log(current)
       return current;
     });
-    setUpdate((current) => (!current))
+    setUpdate((current) => !current);
   };
 
   return (
@@ -127,8 +142,11 @@ function MainCreate({ ...props }: props) {
               setTagData={setTagData}
             />
             <button
-              onClick={create}
-              className="mb-16 h-16 w-[61.5%] flex-shrink-0 bg-blue-500"
+              onClick={(e) => {
+                create();
+                e.currentTarget.disabled = true;
+              }}
+              className="mb-16 h-16 w-[61.5%] flex-shrink-0 rounded-md bg-darkPurple"
             />
           </div>
         )}
@@ -163,11 +181,12 @@ function MainCreate({ ...props }: props) {
           />
         </button>
         <h2 className="text-lightGolden">{Inputs.Name || "Name"}</h2>
-        <div className="h-1 w-full bg-gradient-to-r from-lightGolden via-lightGolden to-purple" />
+        <div className="h-1 w-full flex-shrink-0 bg-gradient-to-r from-lightGolden via-lightGolden to-purple" />
         <textarea
           className="w-full[45.2rem] h-[25rem] flex-shrink-0 rounded-md bg-purple/50 p-4 text-lightGolden opacity-75 outline-none transition-all focus:opacity-100"
           placeholder="Text"
           defaultValue={Questions[Editing - 1]?.Text}
+          ref={(ref) => (textAreaCreateViewofQuestion.current = ref)}
           onChange={(e) =>
             setQuestions((current) => {
               current[Editing - 1]!.Text = e.target.value;
@@ -175,13 +194,12 @@ function MainCreate({ ...props }: props) {
             })
           }
         />
-        <div className="my-2 h-1 w-full bg-gradient-to-r from-lightGolden/0 via-lightGolden to-lightGolden/0" />
+        <div className="my-2 h-1 w-full flex-shrink-0 bg-gradient-to-r from-lightGolden/0 via-lightGolden to-lightGolden/0" />
         <p className="text-center font-semibold text-lightGolden">Choices:</p>
-        {Questions[Editing-1]?.Answers.map((A, i) => AnswersView(A, i))}
+        {Questions[Editing - 1]?.Answers.map((A) => AnswersView(A, A.value))}
         <button
           className="w-full rounded-md bg-lightGolden bg-opacity-70 font-semibold text-purple transition-all hover:bg-opacity-100"
           onClick={() => handleAddAnswer(Editing - 1)}
-          disabled={! update}
         >
           Add
         </button>
@@ -189,9 +207,8 @@ function MainCreate({ ...props }: props) {
     );
   }
 
-  function AnswersView(A:{Text: string, value: number},index: number) {
-    const isRight =
-      Questions[Editing - 1]?.Answers[index] == Questions[Editing]?.Correct;
+  function AnswersView(A: { Text: string; value: number }, index: number) {
+    const isRight = index == Questions[Editing - 1]?.Correct;
 
     return (
       <div key={index} className="flex h-32 w-[75%] flex-shrink-0 gap-4">
@@ -201,22 +218,41 @@ function MainCreate({ ...props }: props) {
             backgroundColor: isRight ? "#F9DA9E" : "#4d3e75",
           }}
         >
-          {isRight ? (
-            <button className="group h-7 w-7">
-              <FontAwesomeIcon
-                icon={"fa-square-check" as IconProp}
-                className="h-full w-full group-hover:text-darkPurple"
-              />
-            </button>
-          ) : (
-            <button className="group h-7 w-7">
-              <FontAwesomeIcon
-                icon={"fa-square-xmark" as IconProp}
-                className="h-full w-full group-hover:text-darkPurple"
-              />
-            </button>
-          )}
-          <button className="group flex h-7 w-7 items-center rounded-full">
+          <button
+            className="group h-7 w-7"
+            onClick={() => {
+              if (!isRight)
+                setQuestions((current) => {
+                  current[Editing - 1]!.Correct = index;
+                  return current;
+                });
+              console.log(Questions[Editing - 1]?.Correct, isRight, index);
+              setUpdate((current) => !current);
+            }}
+          >
+            <FontAwesomeIcon
+              icon={
+                isRight
+                  ? ("fa-square-check" as IconProp)
+                  : ("fa-square-xmark" as IconProp)
+              }
+              className="h-full w-full group-hover:text-darkPurple"
+            />
+          </button>
+          <button
+            className="group flex h-7 w-7 items-center rounded-full"
+            onClick={() => {
+              setQuestions((current) => {
+                const indexy = current[Editing - 1]!.Answers.indexOf(
+                  current[Editing - 1]!.Answers.find((d) => d.value == index)!
+                );
+                if (indexy < 0) return current;
+                current[Editing - 1]!.Answers.splice(indexy, 1);
+                return current;
+              });
+              setUpdate((current) => !current);
+            }}
+          >
             <FontAwesomeIcon
               icon={"fa-trash" as IconProp}
               className="h-full w-full transition-all  group-hover:text-darkPurple"
@@ -227,6 +263,16 @@ function MainCreate({ ...props }: props) {
           className="h-full w-[80%] flex-shrink-0 rounded-md bg-purple/50 p-4 text-lightGolden opacity-75 outline-none transition-all focus:opacity-100"
           placeholder="Text"
           defaultValue={A.Text}
+          onChange={(e) =>
+            setQuestions((current) => {
+              const indx = current[Editing - 1]!.Answers.indexOf(
+                current[Editing - 1]!.Answers.find((A) => A.value == index)!
+              );
+              if (indx < 0) return current;
+              current[Editing - 1]!.Answers[indx]!.Text = e.target.value;
+              return current;
+            })
+          }
         />
       </div>
     );
@@ -237,7 +283,10 @@ function MainCreate({ ...props }: props) {
       <button
         className="flex min-h-[2em] w-full flex-shrink-0 flex-col justify-center rounded-md bg-purple/20 p-2 opacity-80 transition-all hover:opacity-100"
         key={index}
-        onClick={() => setEditing(index + 1)}
+        onClick={() => {
+          setEditing(index + 1);
+          setUpdate((current) => !current);
+        }}
       >
         <p className="font-semibold text-lightGolden">
           {Title.slice(0, 55)}
