@@ -71,7 +71,7 @@ function User() {
           )}
         </div>
 
-        <div className="flex h-full w-full flex-col p-4">
+        <div className="flex h-full w-full flex-col p-4 scrollbar scrollbar-none">
           {Quizzes.data?.map((q) => QuizView(q))}
         </div>
       </div>
