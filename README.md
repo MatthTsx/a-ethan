@@ -1,3 +1,3 @@
 # What is this?
 
-just a scholl project
+just a school project
