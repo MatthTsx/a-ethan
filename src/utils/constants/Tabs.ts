@@ -8,17 +8,17 @@ const tabs = [
         text: "Search",
         Path: "/search/",
         icon: "magnifying-glass"
-    },
-    {
-        text: "Leader Board",
-        Path: "/",
-        icon: "medal"
-    },
-    {
-        text: "Calendar",
-        Path: "/",
-        icon: "clock"
-    },
+    // },
+    // {
+    //     text: "Leader Board",
+    //     Path: "/",
+    //     icon: "medal"
+    // },
+    // {
+    //     text: "Calendar",
+    //     Path: "/",
+    //     icon: "clock"
+    // },
     {
         text: "Create quiz",
         Path: "/Create/",
