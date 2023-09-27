@@ -102,7 +102,7 @@ function TagView(data: {
 }) {
   return (
     <button
-      className={`group flex w-fit items-center gap-2 rounded-md bg-neutral-900 p-1 px-2 text-sm font-semibold`}
+      className={`group flex w-fit items-center gap-2 rounded-md bg-neutral-900 p-1 px-2 text-sm font-semibold text-lightGolden`}
       onClick={() => {
         data.func({ Color: data.Color, id: data.id, Tittle: data.Tittle });
       }}
