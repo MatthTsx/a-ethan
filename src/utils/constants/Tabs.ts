@@ -8,7 +8,7 @@ const tabs = [
         text: "Search",
         Path: "/search/",
         icon: "magnifying-glass"
-    // },
+    },
     // {
     //     text: "Leader Board",
     //     Path: "/",
