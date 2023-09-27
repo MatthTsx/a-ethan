@@ -6,11 +6,11 @@ export default {
     extend: {
       colors: {
         // purple: "#422E5F",
-        purple: "#573e7a",
+        purple: "#7b5da6",
         // purple2:"#342954",
-        purple2:"#4d3e75",
+        purple2:"#63548c",
         lightGolden: "#F9DA9E",
-        darkPurple: "#201930"
+        darkPurple: "#332a47"
       }
     },
   },
